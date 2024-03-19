@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Product } from 'src/app/models/Product.model';
+import { CartService } from 'src/app/services/cart.service';
 
 const ROWS_HEIGHT: { [id:number]: number } = { 1: 400, 3: 335, 4: 350 }
 
@@ -12,7 +14,7 @@ export class HomeComponent implements OnInit {
   category:string | undefined;
   rowHeight = ROWS_HEIGHT[this.cols];
 
-  constructor() { }
+  constructor(private _cartService: CartService) { }
 
   ngOnInit(): void {
   }
@@ -24,6 +26,16 @@ export class HomeComponent implements OnInit {
   onColumnsCountChange(colsNumber: number): void {
     this.cols = colsNumber;
     this.rowHeight = ROWS_HEIGHT[this.cols];
+  }
+
+  onAddToCart(product: Product): void {
+    this._cartService.addToCart({
+      id: product.id,
+      name: product.title,
+      price: product.price,
+      quantity: 1,
+      product: product.image
+    });
   }
 
 }
